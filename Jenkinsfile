@@ -6,10 +6,10 @@ pipeline {
     }
 
     stages {
-        stage('clone code') {
+        stage('build'){
             steps {
-                git 'https://github.com/mohanjay112/tweet-trend.git'
+                sh 'mvn clean deploy'    
             }
-        }
+        }    
     }
 }

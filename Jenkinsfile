@@ -10,20 +10,18 @@ pipeline {
     }
 
     stages {
-        stage('Build & Test') {
+        stage('Build') {
             steps {
-                echo "---------------Build & Test started-----------------"
-                // Run build with tests (skip if you want, but then no test report)
-                sh 'mvn clean verify'
-                echo "-------------- Build & Test completed---------------"
+                echo "---------------Build started-----------------"
+                sh 'mvn clean deploy -Dmaven.test.skip=true'
+                echo "-------------- Build completed---------------"
             }
         }
-
-        stage('Generate Surefire Report') {
-            steps {
-                echo "---------Generating unit test report-----------"
+        stage("test"){
+            steps{
+                echo "---------unit test started-----------"
                 sh 'mvn surefire-report:report'
-                echo "------------Unit test report generated-----------"
+                echo "------------unit test completed "
             }
         }
 

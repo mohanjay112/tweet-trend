@@ -9,7 +9,7 @@ pipeline {
         PATH = "/opt/apache-maven-3.9.9/bin:$PATH"
         registry = 'https://techjay.jfrog.io'
         imageName = 'techjay.jfrog.io/valaxy-docker-local/ttrend'
-        version = '2.1.3'
+        version = '2.1.2'
     }
 
     stages {
@@ -100,7 +100,7 @@ pipeline {
         stage ("Deploy"){
             steps {
                 script {
-                    sh './deploy.sh:'
+                    sh './deploy.sh'
                 }
             }
         }

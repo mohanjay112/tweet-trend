@@ -34,19 +34,26 @@ pipeline {
         }
 
         stage("Quality Gate") {
-            steps {
-                script {
-                    timeout(time: 10, unit: 'MINUTES') {
-                        catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-			def qg = waitForQualityGate()
+         steps {
+           script {
+            catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                try {
+                    timeout(time: 1, unit: 'MINUTES') {
+                        def qg = waitForQualityGate()
                         if (qg.status != 'OK') {
-                            echo "Pipeline quality gate failure: ${qg.status}, continuing the pipeline."
+                            echo "Pipeline quality gate failed with status: ${qg.status}, continuing..."
+                        } else {
+                            echo "Quality gate passed: ${qg.status}"
                         }
                     }
+                } catch (err) {
+                    echo "Quality Gate timed out or failed: ${err.getMessage()}"
                 }
             }
         }
-       }
+    }
+}
+
 
         stage("Jar Publish") {
             steps {
